@@ -81,7 +81,7 @@ function PostSection() {
         {postResult && (
           <>
             <div className="alert alert-secondary mt-2" role="alert">
-              <pre>{formatResponse(postResult)}</pre>
+              <pre data-testid="post-response">{formatResponse(postResult)}</pre>
             </div>
             {!isError && (
               <div className="alert alert-success mt-2" role="alert">

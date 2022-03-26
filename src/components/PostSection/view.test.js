@@ -1,10 +1,11 @@
 import '@testing-library/jest-dom';
 import { act, render, screen } from "@testing-library/react";
-import apiClient from "../../http-common";
 import userEvent from '@testing-library/user-event';
+import axios from 'axios';
 import PostSection from '../PostSection/view';
 
-// Test query DOM case.
+jest.mock('axios');
+// Test query DOM case
 test('PostSection Title', () => {
     render(<PostSection />);
     const linkElement = screen.getByText(/React Axios POST/i);
@@ -51,3 +52,25 @@ test('Render Clear Post Button Clicked', () => {
     expect(screen.getByTestId('clear-button')).toBeCalled
 })
 // Test API Call case
+test("renders products", async () => {
+    await act(async () => {
+        await axios.get.mockImplementationOnce(() => Promise.resolve(mockResponse));
+        render(<PostSection />);
+
+        const button = screen.getByTestId("postdata-button");
+        userEvent.click(button);
+    });
+
+    const response = screen.getByTestId("post-response");
+    expect(response).toBeInTheDocument();
+});
+
+test("renders error", async () => {
+    await act(async () => {
+        await axios.get.mockImplementationOnce(() => Promise.reject(mockError));
+        render(<PostSection />);
+
+        const button = screen.getByTestId("postdata-button");
+        userEvent.click(button);
+    });
+});

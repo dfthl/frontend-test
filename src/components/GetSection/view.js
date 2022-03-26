@@ -50,7 +50,7 @@ function GetSection() {
         {getResult && (
           <>
             <div className="alert alert-secondary mt-2" role="alert">
-              <pre>{formatResponse(getResult)}</pre>
+              <pre data-testid="get-response">{formatResponse(getResult)}</pre>
             </div>
             {!isError && (
               <div className="alert alert-success mt-2" role="alert">

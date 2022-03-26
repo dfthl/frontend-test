@@ -1,11 +1,10 @@
 import '@testing-library/jest-dom';
 import { act, render, screen } from "@testing-library/react";
-import apiClient from "../../http-common";
-import formatResponse from "../../utils/formatResponse";
 import userEvent from '@testing-library/user-event';
 import GetSection from "./view";
 import axios from 'axios';
 
+jest.mock('axios');
 // Test query DOM case
 test('GetSection Title', () => {
     render(<GetSection />);
@@ -36,39 +35,25 @@ test('Render Clear Get Button Clicked', () => {
     expect(screen.getByTestId('clear-button')).toBeCalled
 })
 // Test API Call case
-jest.mock("../../http-common", () => {
-    return {
-        data: {
-            fact: testText
-        }
-    
-    }
+test("renders products", async () => {
+    await act(async () => {
+        await axios.get.mockImplementationOnce(() => Promise.resolve(mockResponse));
+        render(<GetSection />);
+
+        const button = screen.getByTestId("getall-button");
+        userEvent.click(button);
+    });
+
+    const response = screen.getByTestId("get-response");
+    expect(response).toBeInTheDocument();
 });
-const testText = "suksees";
-const errorText = "error";
-const mockResponse = {
-    data: {
-        fact: testText
-    }
-}
-const mockError = {
-    data: {
-        fact: errorText
-    }
-}
-test('GetSection Data', async () => {
+
+test("renders error", async () => {
     await act(async () => {
-        await apiClient.get.mockImplementationOnce(() => Promise.resolve(mockResponse));
-        render(<GetSection/>);
+        await axios.get.mockImplementationOnce(() => Promise.reject(mockError));
+        render(<GetSection />);
+
+        const button = screen.getByTestId("getall-button");
+        userEvent.click(button);
     });
-    const textElement = await screen.getByText(testText);
-    expect(textElement).toBeInTheDocument;
-})
-test('Handle Error', async () => {
-    await act(async () => {
-        await apiClient.get.mockImplementationOnce(() => Promise.reject(mockError));
-        render(<GetSection/>);
-    });
-    const textElement = await screen.getByText(errorText);
-    expect(textElement).toBeInTheDocument;
 });
