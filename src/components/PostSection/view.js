@@ -51,6 +51,7 @@ function PostSection() {
             className="form-control"
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
+            data-testid="title-input"
           />
         </div>
         <div className="form-group">
@@ -59,14 +60,16 @@ function PostSection() {
             className="form-control"
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description"
+            data-testid="description-input"
           />
         </div>
-        <button className="btn btn-sm btn-primary" onClick={postData}>
+        <button className="btn btn-sm btn-primary" onClick={postData} data-testid="postdata-button">
           Post Data
         </button>
         <button
           className="btn btn-sm btn-warning ml-2"
           onClick={clearPostOutput}
+          data-testid="clear-button"
         >
           Clear
         </button>
