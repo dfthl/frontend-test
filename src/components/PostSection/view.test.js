@@ -54,7 +54,7 @@ test('Render Clear Post Button Clicked', () => {
 // Test API Call case
 test("renders products", async () => {
     await act(async () => {
-        await axios.get.mockImplementationOnce(() => Promise.resolve(mockResponse));
+        await axios.post.mockImplementationOnce(() => Promise.resolve(mockResponse));
         render(<PostSection />);
 
         const button = screen.getByTestId("postdata-button");
@@ -67,7 +67,7 @@ test("renders products", async () => {
 
 test("renders error", async () => {
     await act(async () => {
-        await axios.get.mockImplementationOnce(() => Promise.reject(mockError));
+        await axios.post.mockImplementationOnce(() => Promise.reject(mockError));
         render(<PostSection />);
 
         const button = screen.getByTestId("postdata-button");
